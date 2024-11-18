@@ -1,0 +1,30 @@
+[gd_scene load_steps=4 format=3 uid="uid://ctip0rfo5n3o5"]
+
+[ext_resource type="PackedScene" uid="uid://bevbirsoj1225" path="res://character_body_3d.tscn" id="1_66yrq"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_kebij"]
+size = Vector3(1.7632, 0.18515, 1.30408)
+
+[sub_resource type="BoxMesh" id="BoxMesh_olyxa"]
+
+[node name="Node3D" type="Node3D"]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00440014, -0.00316723, -0.00518799)
+shape = SubResource("BoxShape3D_kebij")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+transform = Transform3D(1.77133, 0, 0, 0, 0.18646, 0, 0, 0, 1.3243, 0, 0, 0)
+mesh = SubResource("BoxMesh_olyxa")
+
+[node name="CharacterBody3D" parent="." instance=ExtResource("1_66yrq")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.767802, 0)
+
+[node name="Camera3D" type="Camera3D" parent="CharacterBody3D"]
+transform = Transform3D(2, 0, 0, 0, 1.70345, 1.04797, 0, -1.04797, 1.70345, 0, 0.856396, 3.924)
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.770057, 0.637975, 0, -0.637975, 0.770057, 0, 0, 0)
+shadow_enabled = true
