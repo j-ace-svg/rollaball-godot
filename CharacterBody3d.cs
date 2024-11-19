@@ -10,12 +10,19 @@ public partial class CharacterBody3d : CharacterBody3D
 
 	private float direction = 0;
 
+	public override void _Ready() {
+		Input.MouseMode = Input.MouseModeEnum.Captured;
+	}
+
 	public override void _Input(InputEvent @event) {
 		if (@event is InputEventMouseMotion motionEvent) {
-			direction += motionEvent.Relative.X * Sensitivity;
-		}
+			float deltaRotation = - motionEvent.Relative.X * Sensitivity;
+			direction += deltaRotation;
+			Transform3D transform = Transform;
+			transform.Basis = transform.Basis.Rotated(Vector3.Up, deltaRotation);
 
-		// Now just need to rotate ball to match orientation so camera moves too. Also, lock + hide cursor.
+			Transform = transform;
+		}
 	}
 
 	public override void _PhysicsProcess(double delta)
@@ -67,9 +74,14 @@ public partial class CharacterBody3d : CharacterBody3D
 			acceleration.Z += 1;
 		}
 
+		float deceleration = 0.8f;
+		if (IsOnFloor()) {
+			deceleration = 0.1f;
+		}
+
 		acceleration = acceleration.Rotated(Vector3.Up, direction);
 
-		Velocity = new Vector3(acceleration.X * Speed, Velocity.Y - GravityStrength, acceleration.Z * Speed);
+		Velocity = new Vector3(Velocity.X * deceleration + acceleration.X * Speed, Velocity.Y - GravityStrength, Velocity.Z * deceleration + acceleration.Z * Speed);
 		MoveAndSlide();
 	}
 }
