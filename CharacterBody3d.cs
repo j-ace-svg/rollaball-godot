@@ -3,7 +3,7 @@ using System;
 
 public partial class CharacterBody3d : CharacterBody3D
 {
-	public const float Speed = 5.0f;
+	public const float Speed = 1f;
 	public const float JumpVelocity = 4.5f;
 	public const float GravityStrength = 0.1f;
 	public const float Sensitivity = 0.001f;
@@ -62,26 +62,29 @@ public partial class CharacterBody3d : CharacterBody3D
 		Vector3 acceleration = Vector3.Zero;
 
 		if (Input.IsActionPressed("move_right")) {
-			acceleration.X += 1;
+			acceleration.X += Speed;
 		}
 		if (Input.IsActionPressed("move_left")) {
-			acceleration.X -= 1;
+			acceleration.X -= Speed;
 		}
 		if (Input.IsActionPressed("move_up")) {
-			acceleration.Z -= 1;
+			acceleration.Z -= Speed;
 		}
 		if (Input.IsActionPressed("move_down")) {
-			acceleration.Z += 1;
+			acceleration.Z += Speed;
+		}
+		if (Input.IsActionPressed("jump") && IsOnFloor()) {
+			acceleration.Y += JumpVelocity;
 		}
 
-		float deceleration = 0.8f;
+		float deceleration = 0.95f;
 		if (IsOnFloor()) {
-			deceleration = 0.1f;
+			deceleration = 0.5f;
 		}
 
 		acceleration = acceleration.Rotated(Vector3.Up, direction);
 
-		Velocity = new Vector3(Velocity.X * deceleration + acceleration.X * Speed, Velocity.Y - GravityStrength, Velocity.Z * deceleration + acceleration.Z * Speed);
+		Velocity = new Vector3(Velocity.X * deceleration + acceleration.X * Speed, Velocity.Y - GravityStrength + acceleration.Y, Velocity.Z * deceleration + acceleration.Z * Speed);
 		MoveAndSlide();
 	}
 }

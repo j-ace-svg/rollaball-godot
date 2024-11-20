@@ -2,22 +2,21 @@
 
 [ext_resource type="PackedScene" uid="uid://bevbirsoj1225" path="res://character_body_3d.tscn" id="1_66yrq"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_kebij"]
-size = Vector3(1.7632, 0.18515, 1.30408)
-
 [sub_resource type="BoxMesh" id="BoxMesh_olyxa"]
+size = Vector3(10, 0.2, 15)
+
+[sub_resource type="ConvexPolygonShape3D" id="ConvexPolygonShape3D_t4k38"]
+points = PackedVector3Array(5, 0.1, 7.5, 5, -0.1, 7.5, 5, 0.1, -7.5, -5, 0.1, 7.5, -5, -0.1, 7.5, 5, -0.1, -7.5, -5, 0.1, -7.5, -5, -0.1, -7.5)
 
 [node name="Node3D" type="Node3D"]
 
 [node name="StaticBody3D" type="StaticBody3D" parent="."]
 
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00440014, -0.00316723, -0.00518799)
-shape = SubResource("BoxShape3D_kebij")
-
 [node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
-transform = Transform3D(1.77133, 0, 0, 0, 0.18646, 0, 0, 0, 1.3243, 0, 0, 0)
 mesh = SubResource("BoxMesh_olyxa")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+shape = SubResource("ConvexPolygonShape3D_t4k38")
 
 [node name="CharacterBody3D" parent="." instance=ExtResource("1_66yrq")]
 transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.767802, 0)
