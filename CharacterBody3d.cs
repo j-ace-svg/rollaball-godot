@@ -64,9 +64,11 @@ public partial class CharacterBody3d : CharacterBody3D
 
 		Vector3 acceleration = Vector3.Zero;
 
-		float speed = GroundAcceleration;
+		float speed = GroundSpeed;
+		float speedLimit = GroundSpeedLimit;
 		if (!IsOnFloor()) {
 			speed *= 10;
+			speedLimit *= 10;
 		}
 
 		if (Input.IsActionPressed("move_right")) {
@@ -90,10 +92,11 @@ public partial class CharacterBody3d : CharacterBody3D
 			deceleration = 0.01f;
 		}
 		deceleration = Mathf.Pow(deceleration, (float)delta);*/
-		float projectedVelocity;
-		if (acceleration.length() > 0) {
-			projectedVelocity
+		float projectedVelocity = 0;
+		if (acceleration.Length() > 0) {
+			projectedVelocity = acceleration.Dot(Velocity) / acceleration.Length();
 		}
+		projectedVelocity = Mathf.Min(projectedVelocity, speedLimit);
 
 		acceleration = acceleration.Rotated(Vector3.Up, direction);
 
