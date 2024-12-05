@@ -3,13 +3,12 @@ using System;
 
 public partial class CharacterBody3d : CharacterBody3D
 {
-	public const float GroundSpeed = 60f;
-	public const float GroundSpeedLimit = 30f;
+	public const float GroundSpeed = 100f;
+	public const float GroundSpeedLimit = 6f;
 	public const float JumpVelocity = 270f;
 	public const float GravityStrength = 0.1f;
 	public const float Sensitivity = 0.001f;
-	public const float MaxGroundVelocity = 5f;
-	public const float MaxAirVelocity = 7f;
+	public float framesGrounded = 0f;
 
 	private float direction = 0;
 
@@ -67,8 +66,8 @@ public partial class CharacterBody3d : CharacterBody3D
 		float speed = GroundSpeed;
 		float speedLimit = GroundSpeedLimit;
 		if (!IsOnFloor()) {
-			speed *= 10;
-			speedLimit *= 10;
+			speed *= 3;
+			speedLimit /= 2;
 		}
 
 		if (Input.IsActionPressed("move_right")) {
@@ -87,20 +86,34 @@ public partial class CharacterBody3d : CharacterBody3D
 			acceleration.Y += JumpVelocity;
 		}
 
-		/*float deceleration = 0.1f;
-		if (IsOnFloor()) {
-			deceleration = 0.01f;
-		}
-		deceleration = Mathf.Pow(deceleration, (float)delta);*/
 		float projectedVelocity = 0;
+		Vector2 flatAcceleration = new Vector2(acceleration.X, acceleration.Z);
+		flatAcceleration = flatAcceleration.Rotated(-direction);
+		Vector2 flatVelocity = new Vector2(Velocity.X, Velocity.Z);
 		if (acceleration.Length() > 0) {
-			projectedVelocity = acceleration.Dot(Velocity) / acceleration.Length();
+			projectedVelocity = flatAcceleration.Dot(flatVelocity) / flatAcceleration.Length();
 		}
-		projectedVelocity = Mathf.Min(projectedVelocity, speedLimit);
+		if (projectedVelocity > speedLimit) {
+			// Too fast, do nothing
+		} else if (projectedVelocity > speedLimit - flatAcceleration.Length() * delta && projectedVelocity < speedLimit) {
+			flatVelocity = flatVelocity + (speedLimit - projectedVelocity) * flatAcceleration.Normalized();
+		} else if (projectedVelocity < speedLimit - flatAcceleration.Length() * delta) {
+			flatVelocity = flatVelocity + flatAcceleration * (float)delta;
+		}
+		if (IsOnFloor()) {
+			framesGrounded += 1;
+			GD.Print("Floor");
+		} else {
+			framesGrounded = 0;
+			GD.Print("Air");
+		}
+		if (framesGrounded > 1) {
+			float deceleration = 0.001f;
+			deceleration = Mathf.Pow(deceleration, (float)delta);
+			flatVelocity *= deceleration;
+		}
 
-		acceleration = acceleration.Rotated(Vector3.Up, direction);
-
-		Velocity = new Vector3(Velocity.X + acceleration.X * (float)delta, Velocity.Y - GravityStrength + acceleration.Y * (float)delta, Velocity.Z + acceleration.Z * (float)delta);
+		Velocity = new Vector3(flatVelocity.X, Velocity.Y - GravityStrength + acceleration.Y * (float)delta, flatVelocity.Y);
 		MoveAndSlide();
 	}
 }
