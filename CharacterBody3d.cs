@@ -1,19 +1,24 @@
 using Godot;
 using System;
 
-public partial class CharacterBody3d : CharacterBody3D
+public partial class RigidBody3d : RigidBody3D
 {
 	public const float GroundSpeed = 100f;
 	public const float GroundSpeedLimit = 6f;
-	public const float JumpVelocity = 270f;
-	public const float GravityStrength = 0.1f;
+	public const float JumpVelocity = 270f * 2;
+	public const float GravityStrength = 0.1f * 3;
 	public const float Sensitivity = 0.001f;
 	public float framesGrounded = 0f;
+	// Normal start position: 0, 0.768, 0
 
 	private float direction = 0;
 
 	public override void _Ready() {
 		Input.MouseMode = Input.MouseModeEnum.Captured;
+	}
+
+	public bool IsOnFloor() {
+		return true;
 	}
 
 	public override void _Input(InputEvent @event) {
@@ -29,38 +34,6 @@ public partial class CharacterBody3d : CharacterBody3D
 
 	public override void _PhysicsProcess(double delta)
 	{
-		/*Vector3 velocity = Velocity;
-
-		// Add the gravity.
-		if (!IsOnFloor())
-		{
-			velocity += GetGravity() * (float)delta;
-		}
-
-		// Handle Jump.
-		if (Input.IsActionJustPressed("ui_accept") && IsOnFloor())
-		{
-			velocity.Y = JumpVelocity;
-		}
-
-		// Get the input direction and handle the movement/deceleration.
-		// As good practice, you should replace UI actions with custom gameplay actions.
-		Vector2 inputDir = Input.GetVector("ui_left", "ui_right", "ui_up", "ui_down");
-		Vector3 direction = (Transform.Basis * new Vector3(inputDir.X, 0, inputDir.Y)).Normalized();
-		if (direction != Vector3.Zero)
-		{
-			velocity.X = direction.X * Speed;
-			velocity.Z = direction.Z * Speed;
-		}
-		else
-		{
-			velocity.X = Mathf.MoveToward(Velocity.X, 0, Speed);
-			velocity.Z = Mathf.MoveToward(Velocity.Z, 0, Speed);
-		}
-
-		Velocity = velocity;
-		MoveAndSlide();*/
-
 		Vector3 acceleration = Vector3.Zero;
 
 		float speed = GroundSpeed;
@@ -89,23 +62,27 @@ public partial class CharacterBody3d : CharacterBody3D
 		float projectedVelocity = 0;
 		Vector2 flatAcceleration = new Vector2(acceleration.X, acceleration.Z);
 		flatAcceleration = flatAcceleration.Rotated(-direction);
-		Vector2 flatVelocity = new Vector2(Velocity.X, Velocity.Z);
+		Vector2 flatVelocity = new Vector2(LinearVelocity.X, LinearVelocity.Z);
 		if (acceleration.Length() > 0) {
 			projectedVelocity = flatAcceleration.Dot(flatVelocity) / flatAcceleration.Length();
+			GD.Print(projectedVelocity);
 		}
-		if (projectedVelocity > speedLimit) {
+		if (projectedVelocity >= speedLimit) {
 			// Too fast, do nothing
-		} else if (projectedVelocity > speedLimit - flatAcceleration.Length() * delta && projectedVelocity < speedLimit) {
+			GD.Print("Maxed");
+		} else if (projectedVelocity >= speedLimit - flatAcceleration.Length() * delta && projectedVelocity < speedLimit) {
 			flatVelocity = flatVelocity + (speedLimit - projectedVelocity) * flatAcceleration.Normalized();
+			//GD.Print((speedLimit - projectedVelocity) * flatAcceleration.Normalized());
 		} else if (projectedVelocity < speedLimit - flatAcceleration.Length() * delta) {
 			flatVelocity = flatVelocity + flatAcceleration * (float)delta;
+			//GD.Print(flatAcceleration * (float)delta);
 		}
 		if (IsOnFloor()) {
 			framesGrounded += 1;
-			GD.Print("Floor");
+			//GD.Print("Floor");
 		} else {
 			framesGrounded = 0;
-			GD.Print("Air");
+			//GD.Print("Air");
 		}
 		if (framesGrounded > 1) {
 			float deceleration = 0.001f;
@@ -113,7 +90,6 @@ public partial class CharacterBody3d : CharacterBody3D
 			flatVelocity *= deceleration;
 		}
 
-		Velocity = new Vector3(flatVelocity.X, Velocity.Y - GravityStrength + acceleration.Y * (float)delta, flatVelocity.Y);
-		MoveAndSlide();
+		LinearVelocity = new Vector3(flatVelocity.X, LinearVelocity.Y + acceleration.Y * (float)delta, flatVelocity.Y);
 	}
 }
