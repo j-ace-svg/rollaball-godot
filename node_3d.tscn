@@ -28,12 +28,12 @@ mesh = SubResource("BoxMesh_olyxa")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5)
 shape = SubResource("ConcavePolygonShape3D_8whoe")
 
-[node name="CharacterBody3D" parent="." instance=ExtResource("1_66yrq")]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, -26.0715, -6.40079, 36.2714)
+[node name="RigidBody3D" parent="." instance=ExtResource("1_66yrq")]
+transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.768, 0)
 axis_lock_angular_x = true
 axis_lock_angular_z = true
 
-[node name="Camera3D" type="Camera3D" parent="CharacterBody3D"]
+[node name="Camera3D" type="Camera3D" parent="RigidBody3D"]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0.8564, -0.076)
 script = ExtResource("2_6l74i")
 
@@ -62,5 +62,29 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.403172, 0.00183117, -5)
 mesh = SubResource("BoxMesh_olyxa")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5)
+shape = SubResource("ConcavePolygonShape3D_8whoe")
+
+[node name="StaticBody3D2" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 10, -18)
+physics_material_override = ExtResource("1_yyl7n")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5)
+mesh = SubResource("BoxMesh_olyxa")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5)
+shape = SubResource("ConcavePolygonShape3D_8whoe")
+
+[node name="StaticBody3D3" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -26)
+physics_material_override = ExtResource("1_yyl7n")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5)
+mesh = SubResource("BoxMesh_olyxa")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D3"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5)
 shape = SubResource("ConcavePolygonShape3D_8whoe")
