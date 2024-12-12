@@ -29,9 +29,11 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5)
 shape = SubResource("ConcavePolygonShape3D_8whoe")
 
 [node name="RigidBody3D" parent="." instance=ExtResource("1_66yrq")]
-transform = Transform3D(0.5, 0, 0, 0, 0.5, 0, 0, 0, 0.5, 0, 0.768, 0)
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.65281, 0)
 axis_lock_angular_x = true
 axis_lock_angular_z = true
+contact_monitor = true
+max_contacts_reported = 20
 
 [node name="Camera3D" type="Camera3D" parent="RigidBody3D"]
 transform = Transform3D(2, 0, 0, 0, 2, 0, 0, 0, 2, 0, 0.8564, -0.076)
