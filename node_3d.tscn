@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://ctip0rfo5n3o5"]
+[gd_scene load_steps=9 format=3 uid="uid://ctip0rfo5n3o5"]
 
 [ext_resource type="PackedScene" uid="uid://bevbirsoj1225" path="res://character_body_3d.tscn" id="1_66yrq"]
 [ext_resource type="Texture2D" uid="uid://c3hp1bd87pvw6" path="res://textures/Seamless-Stone-Wall-Texture-3210711477.jpg" id="1_aed8f"]
 [ext_resource type="PhysicsMaterial" uid="uid://dst4i2wsaoi56" path="res://physics materials/floor_material.tres" id="1_yyl7n"]
 [ext_resource type="Script" path="res://CameraController.cs" id="2_6l74i"]
+[ext_resource type="PackedScene" uid="uid://dnxjcy6dm3th" path="res://wall.tscn" id="5_j5mxo"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c5nyc"]
 albedo_texture = ExtResource("1_aed8f")
@@ -32,6 +33,7 @@ shape = SubResource("ConcavePolygonShape3D_8whoe")
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.65281, 0)
 axis_lock_angular_x = true
 axis_lock_angular_z = true
+gravity_scale = 0.0
 contact_monitor = true
 max_contacts_reported = 20
 
@@ -42,30 +44,6 @@ script = ExtResource("2_6l74i")
 [node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 0.770057, 0.637975, 0, -0.637975, 0.770057, 0, 0, 0)
 shadow_enabled = true
-
-[node name="StaticBody3D6" type="StaticBody3D" parent="."]
-transform = Transform3D(1, -1.73205, 0, 1.73205, 1, 0, 0, 0, 2, -10.2461, -17.8455, 42.4)
-physics_material_override = ExtResource("1_yyl7n")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D6"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.403172, 0.00183117, -5)
-mesh = SubResource("BoxMesh_olyxa")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D6"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5)
-shape = SubResource("ConcavePolygonShape3D_8whoe")
-
-[node name="StaticBody3D8" type="StaticBody3D" parent="."]
-transform = Transform3D(1, -1.73205, 0, 1.73205, 1, 0, 0, 0, 2, -10.2461, -17.8455, 92.4)
-physics_material_override = ExtResource("1_yyl7n")
-
-[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D8"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.403172, 0.00183117, -5)
-mesh = SubResource("BoxMesh_olyxa")
-
-[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D8"]
-transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5)
-shape = SubResource("ConcavePolygonShape3D_8whoe")
 
 [node name="StaticBody3D2" type="StaticBody3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 10, -18)
@@ -90,3 +68,41 @@ mesh = SubResource("BoxMesh_olyxa")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D3"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5)
 shape = SubResource("ConcavePolygonShape3D_8whoe")
+
+[node name="Ramps" type="Node" parent="."]
+
+[node name="StaticBody3D6" type="StaticBody3D" parent="Ramps"]
+transform = Transform3D(1, -1.73205, 0, 1.73205, 1, 0, 0, 0, 2, -10.2461, -17.8455, 42.4)
+physics_material_override = ExtResource("1_yyl7n")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ramps/StaticBody3D6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.403172, 0.00183117, -5)
+mesh = SubResource("BoxMesh_olyxa")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ramps/StaticBody3D6"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5)
+shape = SubResource("ConcavePolygonShape3D_8whoe")
+
+[node name="StaticBody3D8" type="StaticBody3D" parent="Ramps"]
+transform = Transform3D(1, -1.73205, 0, 1.73205, 1, 0, 0, 0, 2, -10.2461, -17.8455, 92.4)
+physics_material_override = ExtResource("1_yyl7n")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Ramps/StaticBody3D8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.403172, 0.00183117, -5)
+mesh = SubResource("BoxMesh_olyxa")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Ramps/StaticBody3D8"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5)
+shape = SubResource("ConcavePolygonShape3D_8whoe")
+
+[node name="Wall" parent="Ramps" instance=ExtResource("5_j5mxo")]
+transform = Transform3D(1.018, 1.76323, 0, -1.76323, 1.018, 0, 0, 0, 0.6108, -35.246, -17.846, 159.4)
+
+[node name="Wall2" parent="Ramps" instance=ExtResource("5_j5mxo")]
+transform = Transform3D(0.983312, 1.70315, 0.158087, -1.76323, 1.018, -9.1071e-09, -0.263478, -0.456357, 0.589988, -33.1637, -17.846, 171.4)
+
+[node name="Wall3" parent="Ramps" instance=ExtResource("5_j5mxo")]
+transform = Transform3D(0.881614, 1.527, 0.3054, -1.76323, 1.018, -9.1071e-09, -0.509, -0.881614, 0.528968, -27.8175, -17.846, 182.454)
+
+[node name="Wall4" parent="Ramps" instance=ExtResource("5_j5mxo")]
+transform = Transform3D(0.719834, 1.24679, 0.431901, -1.76323, 1.018, -2.91774e-08, -0.719834, -1.24679, 0.431901, -20.0141, -17.846, 191.805)
