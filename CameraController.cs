@@ -1,7 +1,7 @@
 using Godot;
 using System;
 
-public partial class CameraController : Camera3D
+public partial class CameraController : Node3D
 {
 	public const float Sensitivity = 0.001f;
 	public float verticalDirection = 0;

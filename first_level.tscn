@@ -1,0 +1,148 @@
+[gd_scene load_steps=8 format=3 uid="uid://ctip0rfo5n3o5"]
+
+[ext_resource type="PhysicsMaterial" uid="uid://dst4i2wsaoi56" path="res://physics materials/floor_material.tres" id="1_83emy"]
+[ext_resource type="Texture2D" uid="uid://c3hp1bd87pvw6" path="res://textures/Seamless-Stone-Wall-Texture-3210711477.jpg" id="2_ekdap"]
+[ext_resource type="PackedScene" uid="uid://bevbirsoj1225" path="res://player.tscn" id="3_fhtdm"]
+[ext_resource type="PackedScene" uid="uid://dnxjcy6dm3th" path="res://wall.tscn" id="5_5p7yw"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c5nyc"]
+albedo_texture = ExtResource("2_ekdap")
+
+[sub_resource type="BoxMesh" id="BoxMesh_olyxa"]
+material = SubResource("StandardMaterial3D_c5nyc")
+size = Vector3(20, 0.2, 25)
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_8whoe"]
+data = PackedVector3Array(-10, 0.1, 12.5, 10, 0.1, 12.5, -10, -0.1, 12.5, 10, 0.1, 12.5, 10, -0.1, 12.5, -10, -0.1, 12.5, 10, 0.1, -12.5, -10, 0.1, -12.5, 10, -0.1, -12.5, -10, 0.1, -12.5, -10, -0.1, -12.5, 10, -0.1, -12.5, 10, 0.1, 12.5, 10, 0.1, -12.5, 10, -0.1, 12.5, 10, 0.1, -12.5, 10, -0.1, -12.5, 10, -0.1, 12.5, -10, 0.1, -12.5, -10, 0.1, 12.5, -10, -0.1, -12.5, -10, 0.1, 12.5, -10, -0.1, 12.5, -10, -0.1, -12.5, 10, 0.1, 12.5, -10, 0.1, 12.5, 10, 0.1, -12.5, -10, 0.1, 12.5, -10, 0.1, -12.5, 10, 0.1, -12.5, -10, -0.1, 12.5, 10, -0.1, 12.5, -10, -0.1, -12.5, 10, -0.1, 12.5, 10, -0.1, -12.5, -10, -0.1, -12.5)
+
+[node name="First Level" type="Node3D"]
+
+[node name="StaticBody3D" type="StaticBody3D" parent="."]
+physics_material_override = ExtResource("1_83emy")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5)
+mesh = SubResource("BoxMesh_olyxa")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5)
+shape = SubResource("ConcavePolygonShape3D_8whoe")
+
+[node name="Player" parent="." instance=ExtResource("3_fhtdm")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.65281, 0)
+axis_lock_angular_x = true
+axis_lock_angular_z = true
+gravity_scale = 0.0
+contact_monitor = true
+max_contacts_reported = 20
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 0.770057, 0.637975, 0, -0.637975, 0.770057, 0, 0, 0)
+shadow_enabled = true
+
+[node name="StaticBody3D2" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, -4.37114e-08, 1, 0, -1, -4.37114e-08, 0, 10, -18)
+physics_material_override = ExtResource("1_83emy")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5)
+mesh = SubResource("BoxMesh_olyxa")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D2"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5)
+shape = SubResource("ConcavePolygonShape3D_8whoe")
+
+[node name="StaticBody3D3" type="StaticBody3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -26)
+physics_material_override = ExtResource("1_83emy")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5)
+mesh = SubResource("BoxMesh_olyxa")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D3"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -5)
+shape = SubResource("ConcavePolygonShape3D_8whoe")
+
+[node name="Ramps" type="Node" parent="."]
+
+[node name="Turn Up" type="Node" parent="Ramps"]
+
+[node name="Wall5" parent="Ramps/Turn Up" instance=ExtResource("5_5p7yw")]
+transform = Transform3D(0.5, -0.866025, 1.72404e-09, 0.800161, 0.461973, 0.0765045, -0.331274, -0.191261, 0.184789, 1.24545, -22.1469, 73.2317)
+
+[node name="Wall6" parent="Ramps/Turn Up" instance=ExtResource("5_5p7yw")]
+transform = Transform3D(0.5, -0.866026, -2.87092e-09, 0.825989, 0.476885, 0.0601079, -0.260275, -0.15027, 0.190754, 1.24545, -23.707, 69.2664)
+
+[node name="Wall7" parent="Ramps/Turn Up" instance=ExtResource("5_5p7yw")]
+transform = Transform3D(0.5, -0.866026, 2.93906e-09, 0.84553, 0.488167, 0.0432539, -0.187295, -0.108135, 0.195267, 1.24545, -24.8981, 65.1546)
+
+[node name="Wall8" parent="Ramps/Turn Up" instance=ExtResource("5_5p7yw")]
+transform = Transform3D(0.5, -0.866025, 4.66551e-09, 0.858636, 0.495734, 0.0260706, -0.112889, -0.0651766, 0.198293, 1.24545, -25.7459, 60.9786)
+
+[node name="Wall9" parent="Ramps/Turn Up" instance=ExtResource("5_5p7yw")]
+transform = Transform3D(0.5, -0.866025, 1.00366e-08, 0.865208, 0.499528, 0.00868903, -0.0376246, -0.0217225, 0.199811, 1.24545, -26.1533, 56.8532)
+
+[node name="Wall10" parent="Ramps/Turn Up" instance=ExtResource("5_5p7yw")]
+transform = Transform3D(0.5, -0.866025, 1.28023e-08, 0.865194, 0.49952, -0.00875871, 0.0379263, 0.0218969, 0.199808, 1.24545, -26.263, 52.5935)
+
+[node name="Wall11" parent="Ramps/Turn Up" instance=ExtResource("5_5p7yw")]
+transform = Transform3D(0.5, -0.866025, 1.45384e-08, 0.858597, 0.495711, -0.0261398, 0.113189, 0.0653496, 0.198284, 1.24545, -25.976, 48.3223)
+
+[node name="Wall12" parent="Ramps/Turn Up" instance=ExtResource("5_5p7yw")]
+transform = Transform3D(0.5, -0.866026, 2.5439e-09, 0.845465, 0.488129, -0.043322, 0.18759, 0.108305, 0.195252, 1.24545, -25.3444, 44.1081)
+
+[node name="Wall13" parent="Ramps/Turn Up" instance=ExtResource("5_5p7yw")]
+transform = Transform3D(0.5, -0.866025, 5.76693e-10, 0.825898, 0.476832, -0.0601744, 0.260563, 0.150436, 0.190733, 1.24545, -24.3944, 40.0566)
+
+[node name="Wall14" parent="Ramps/Turn Up" instance=ExtResource("5_5p7yw")]
+transform = Transform3D(0.5, -0.866025, 4.10679e-09, 0.800045, 0.461906, -0.0765689, 0.331553, 0.191422, 0.184763, 1.24545, -23.0406, 36.0161)
+
+[node name="Wall15" parent="Ramps/Turn Up" instance=ExtResource("5_5p7yw")]
+transform = Transform3D(0.5, -0.866025, -3.42101e-09, 0.768104, 0.443465, -0.0923806, 0.40002, 0.230952, 0.177386, 1.24545, -21.3101, 32.1007)
+
+[node name="Wall16" parent="Ramps/Turn Up" instance=ExtResource("5_5p7yw")]
+transform = Transform3D(0.5, -0.866025, -4.15483e-10, 0.730317, 0.421649, -0.107489, 0.465442, 0.268723, 0.16866, 1.24545, -19.2752, 28.3568)
+
+[node name="Wall17" parent="Ramps/Turn Up" instance=ExtResource("5_5p7yw")]
+transform = Transform3D(0.5, -0.866025, 8.58885e-09, 0.686972, 0.396624, -0.12178, 0.527323, 0.30445, 0.158649, 1.24545, -16.9356, 24.9347)
+
+[node name="Wall18" parent="Ramps/Turn Up" instance=ExtResource("5_5p7yw")]
+transform = Transform3D(0.5, -0.866025, -7.02258e-09, 0.638399, 0.36858, -0.135144, 0.58519, 0.337859, 0.147432, 1.24545, -14.2815, 21.601)
+
+[node name="Wall19" parent="Ramps/Turn Up" instance=ExtResource("5_5p7yw")]
+transform = Transform3D(0.5, -0.866026, 4.24711e-09, 0.584967, 0.337731, -0.147479, 0.638603, 0.368698, 0.135092, 1.24545, -11.3162, 18.5135)
+
+[node name="Wall23" parent="Ramps/Turn Up" instance=ExtResource("5_5p7yw")]
+transform = Transform3D(0.5, -0.866025, 4.9409e-09, 0.58519, 0.337859, 0.147432, -0.638399, -0.36858, 0.135144, 1.24545, -9.85287, 90.2401)
+
+[node name="Wall24" parent="Ramps/Turn Up" instance=ExtResource("5_5p7yw")]
+transform = Transform3D(0.5, -0.866025, 7.02638e-09, 0.638603, 0.368698, 0.135092, -0.584967, -0.337731, 0.147479, 1.24545, -12.9426, 87.3056)
+
+[node name="Wall25" parent="Ramps/Turn Up" instance=ExtResource("5_5p7yw")]
+transform = Transform3D(0.5, -0.866025, 8.16894e-09, 0.687156, 0.39673, 0.121725, -0.527083, -0.304311, 0.158692, 1.24545, -15.6425, 84.16)
+
+[node name="Wall26" parent="Ramps/Turn Up" instance=ExtResource("5_5p7yw")]
+transform = Transform3D(0.5, -0.866025, 1.45178e-08, 0.730479, 0.421742, 0.107431, -0.465188, -0.268576, 0.168697, 1.24545, -18.1757, 80.7336)
+
+[node name="Wall27" parent="Ramps/Turn Up" instance=ExtResource("5_5p7yw")]
+transform = Transform3D(0.5, -0.866025, 1.61633e-08, 0.768243, 0.443546, 0.0923188, -0.399752, -0.230797, 0.177418, 1.24545, -20.3905, 77.0702)
+
+[node name="Turn Left" type="Node" parent="Ramps"]
+
+[node name="Wall" parent="Ramps/Turn Left" instance=ExtResource("5_5p7yw")]
+transform = Transform3D(1.018, 1.76323, 0, -1.76323, 1.018, 0, 0, 0, 0.6108, -25.2938, -32.2765, 90.2358)
+
+[node name="Wall2" parent="Ramps/Turn Left" instance=ExtResource("5_5p7yw")]
+transform = Transform3D(0.983312, 1.70315, 0.158087, -1.76323, 1.018, -9.1071e-09, -0.263478, -0.456357, 0.589988, -23.2116, -32.2765, 102.236)
+
+[node name="Wall3" parent="Ramps/Turn Left" instance=ExtResource("5_5p7yw")]
+transform = Transform3D(0.881614, 1.527, 0.3054, -1.76323, 1.018, -9.1071e-09, -0.509, -0.881614, 0.528968, -17.8654, -32.2765, 113.29)
+
+[node name="Wall4" parent="Ramps/Turn Left" instance=ExtResource("5_5p7yw")]
+transform = Transform3D(0.719834, 1.24679, 0.431901, -1.76323, 1.018, -2.91774e-08, -0.719834, -1.24679, 0.431901, -10.062, -32.2765, 122.641)
+
+[node name="Flat ramp" type="Node" parent="Ramps"]
+
+[node name="Wall" parent="Ramps/Flat ramp" instance=ExtResource("5_5p7yw")]
+transform = Transform3D(0.681558, -0.96195, 1.73553, 1.54103, 0.725, 0, -0.571895, 0.807172, 2.06832, 36.3932, -52.9315, 136.132)

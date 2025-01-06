@@ -1,0 +1,35 @@
+[gd_scene load_steps=8 format=3 uid="uid://bevbirsoj1225"]
+
+[ext_resource type="Script" path="res://RigidBody3d.cs" id="1_w3dtc"]
+[ext_resource type="PhysicsMaterial" uid="uid://bcyuokwaemhg7" path="res://physics materials/player_material.tres" id="1_wxu4m"]
+[ext_resource type="Script" path="res://GrappleHook.cs" id="3_8qhdc"]
+[ext_resource type="Script" path="res://CameraController.cs" id="4_pp3bi"]
+
+[sub_resource type="CapsuleMesh" id="CapsuleMesh_68i1l"]
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_8ew7w"]
+
+[sub_resource type="BoxMesh" id="BoxMesh_brsud"]
+
+[node name="RigidBody3D" type="RigidBody3D"]
+physics_material_override = ExtResource("1_wxu4m")
+script = ExtResource("1_w3dtc")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CapsuleMesh_68i1l")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CapsuleShape3D_8ew7w")
+
+[node name="CameraContainer" type="Node3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.856, -0.076)
+script = ExtResource("4_pp3bi")
+
+[node name="Camera3D" type="Camera3D" parent="CameraContainer"]
+
+[node name="GrappleHookController" type="Node3D" parent="CameraContainer"]
+script = ExtResource("3_8qhdc")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CameraContainer/GrappleHookController"]
+transform = Transform3D(0.271397, 0, 0, 0, 0.271397, 0, 0, 0, 0.751991, 0.252, -0.597, -0.544)
+mesh = SubResource("BoxMesh_brsud")

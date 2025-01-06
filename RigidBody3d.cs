@@ -44,7 +44,7 @@ public partial class RigidBody3d : RigidBody3D
 			    break;
 		    }
 		}
-		GD.Print(isGrounded);
+		//GD.Print(isGrounded);
 
 		oldDirection = direction;
 	}
