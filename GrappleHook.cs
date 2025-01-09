@@ -1,10 +1,11 @@
 using Godot;
+using Godot.Physics3D;
 using System;
 
 public partial class GrappleHook : Node3D
 {
 	public const float GrappleDistance = 30f;
-	private Generic6DOFJoint GrappleJoint;
+	//private Generic6DOFJoint3D GrappleJoint;
 	private bool Grappling = false;
 
 	public override void _Ready() {
@@ -20,7 +21,7 @@ public partial class GrappleHook : Node3D
 				var result = spaceState.IntersectRay(query);
 				GD.Print(result);
 
-				GrappleJoint = new Generic6DOFJoint();
+				var GrappleJoint = new Generic6DOFJoint3D();
 				AddChild(GrappleJoint);
 			}
 		}
