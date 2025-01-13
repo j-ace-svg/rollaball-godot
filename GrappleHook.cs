@@ -5,6 +5,7 @@ public partial class GrappleHook : Node3D
 {
 	public const float GrappleDistance = 30f;
 	private Generic6DofJoint3D GrappleJoint;
+	private Node3D GrappleTarget;
 	private bool Grappling = false;
 
 	public override void _Ready() {
@@ -23,8 +24,16 @@ public partial class GrappleHook : Node3D
 			GrappleJoint = new Generic6DofJoint3D();
 			AddChild(GrappleJoint);
 
+			GrappleTarget = new Node3D();
+			Transform3D GrappleTargetTransform = GrappleTarget.Transform;
+			GrappleTargetTransform.Origin = ((Vector3) result["position"]);
+			GrappleTarget.Transform = GrappleTargetTransform;
+			AddChild(GrappleTarget);
+
 			GrappleJoint.NodeA = this.GetNode("../..").GetPath();
-			//GrappleJoint.NodeB = result["collider"].GetPath();
+			GrappleJoint.NodeB = GrappleTarget.GetPath();
+
+			GrappleJoint.LinearLimitY__Enabled = false;
 		}
 	}
 
