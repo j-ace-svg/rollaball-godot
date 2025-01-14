@@ -1,6 +1,8 @@
 using Godot;
 using System;
 
+using JP = Godot.Generic6DofJoint3D.Param;
+
 public partial class GrappleHook : Node3D
 {
 	public const float GrappleDistance = 30f;
@@ -28,12 +30,26 @@ public partial class GrappleHook : Node3D
 			Transform3D GrappleTargetTransform = GrappleTarget.Transform;
 			GrappleTargetTransform.Origin = ((Vector3) result["position"]);
 			GrappleTarget.Transform = GrappleTargetTransform;
-			AddChild(GrappleTarget);
+			GrappleTarget.Basis = new Basis();
+			this.GetNode("/root").AddChild(GrappleTarget);
 
 			GrappleJoint.NodeA = this.GetNode("../..").GetPath();
 			GrappleJoint.NodeB = GrappleTarget.GetPath();
 
-			GrappleJoint.LinearLimitY__Enabled = false;
+			GrappleJoint.Set("linear_limit_x/enabled", false);
+			GrappleJoint.Set("linear_limit_y/enabled", false);
+			GrappleJoint.Set("linear_limit_z/enabled", false);
+			GrappleJoint.Set("angular_limit_x/enabled", false);
+			GrappleJoint.Set("angular_limit_y/enabled", false);
+			GrappleJoint.Set("angular_limit_z/enabled", false);
+
+			GrappleJoint.Set("linear_spring_x/enabled", true);
+			GrappleJoint.Set("linear_spring_y/enabled", true);
+			GrappleJoint.Set("linear_spring_z/enabled", true);
+			GrappleJoint.Set("linear_spring_x/stiffness", 1);
+			GrappleJoint.Set("linear_spring_y/stiffness", 1);
+			GrappleJoint.Set("linear_spring_z/stiffness", 1);
+			GD.Print(GrappleJoint);
 		}
 	}
 
@@ -43,6 +59,7 @@ public partial class GrappleHook : Node3D
 				if (clickEvent.Pressed) {
 					StartGrapple();
 				} else {
+					GD.Print(GrappleJoint.Get("linear_sprint_x/enabled"));
 				}
 			}
 		}
