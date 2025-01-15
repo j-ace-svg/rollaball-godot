@@ -31,7 +31,8 @@ public partial class GrappleHook : Node3D
 			GrappleTargetTransform.Origin = ((Vector3) result["position"]);
 			GrappleTarget.Transform = GrappleTargetTransform;
 			GrappleTarget.Basis = new Basis();
-			this.GetNode("/root").AddChild(GrappleTarget);
+			//this.GetNode("/root").AddChild(GrappleTarget);
+			GD.Print(GrappleTarget.GetPath());
 
 			GrappleJoint.NodeA = this.GetNode("../..").GetPath();
 			GrappleJoint.NodeB = GrappleTarget.GetPath();
