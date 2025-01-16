@@ -5,12 +5,17 @@ using JP = Godot.Generic6DofJoint3D.Param;
 
 public partial class GrappleHook : Node3D
 {
-	public const float GrappleDistance = 30f;
-	private Generic6DofJoint3D GrappleJoint;
-	private Node3D GrappleTarget;
+	public const float GrappleDistance = 100f;
+	private Vector3 GrappleTarget;
 	private bool Grappling = false;
+	public RigidBody3D Player;
+
+	public float RestLength = 10f;
+	public const float Stiffness = 0.05f;
+	public const float Damping = 1f;
 
 	public override void _Ready() {
+		Player = (RigidBody3D) this.GetNode("../..");
 	}
 
 	private void StartGrapple() {
@@ -22,36 +27,29 @@ public partial class GrappleHook : Node3D
 
 		if (result.Count != 0)
 		{
+			Grappling = true;
 			GD.Print(result);
-			GrappleJoint = new Generic6DofJoint3D();
-			AddChild(GrappleJoint);
-
-			GrappleTarget = new Node3D();
-			Transform3D GrappleTargetTransform = GrappleTarget.Transform;
-			GrappleTargetTransform.Origin = ((Vector3) result["position"]);
-			GrappleTarget.Transform = GrappleTargetTransform;
-			GrappleTarget.Basis = new Basis();
-			//this.GetNode("/root").AddChild(GrappleTarget);
-			GD.Print(GrappleTarget.GetPath());
-
-			GrappleJoint.NodeA = this.GetNode("../..").GetPath();
-			GrappleJoint.NodeB = GrappleTarget.GetPath();
-
-			GrappleJoint.Set("linear_limit_x/enabled", false);
-			GrappleJoint.Set("linear_limit_y/enabled", false);
-			GrappleJoint.Set("linear_limit_z/enabled", false);
-			GrappleJoint.Set("angular_limit_x/enabled", false);
-			GrappleJoint.Set("angular_limit_y/enabled", false);
-			GrappleJoint.Set("angular_limit_z/enabled", false);
-
-			GrappleJoint.Set("linear_spring_x/enabled", true);
-			GrappleJoint.Set("linear_spring_y/enabled", true);
-			GrappleJoint.Set("linear_spring_z/enabled", true);
-			GrappleJoint.Set("linear_spring_x/stiffness", 1);
-			GrappleJoint.Set("linear_spring_y/stiffness", 1);
-			GrappleJoint.Set("linear_spring_z/stiffness", 1);
-			GD.Print(GrappleJoint);
+			GrappleTarget = ((Vector3) result["position"]);
+			RestLength = (GrappleTarget - Player.Transform.Origin).Length() * 0.85f;
 		}
+	}
+
+	private void UpdateGrapple() {
+		Vector3 GrapplePath = GrappleTarget - Player.Transform.Origin;
+		Vector3 GrapplePathNormal = GrapplePath.Normalized();
+		float GrappleDist = GrapplePath.Length();
+
+		float SpringDist = GrappleDist - RestLength;
+		Vector3 SpringForce = Vector3.Zero;
+		if (SpringDist > 0) {
+			SpringForce = GrapplePathNormal * SpringDist * Stiffness;
+
+			Vector3 VelDot = Player.LinearVelocity.Dot(GrapplePathNormal);
+
+		}
+
+		Player.LinearVelocity = Player.LinearVelocity + SpringForce;
+		GD.Print(SpringDist);
 	}
 
 	public override void _Input(InputEvent @event) {
@@ -60,9 +58,16 @@ public partial class GrappleHook : Node3D
 				if (clickEvent.Pressed) {
 					StartGrapple();
 				} else {
-					GD.Print(GrappleJoint.Get("linear_sprint_x/enabled"));
+					Grappling = false;
 				}
 			}
+		}
+	}
+
+	public override void _PhysicsProcess(double delta)
+	{
+		if (Grappling) {
+			UpdateGrapple();
 		}
 	}
 }
