@@ -11,11 +11,14 @@ public partial class GrappleHook : Node3D
 	public RigidBody3D Player;
 
 	public float RestLength = 10f;
-	public const float Stiffness = 0.05f;
+	public const float Stiffness = 5f;
 	public const float Damping = 1f;
+
+	private Vector3 StartPoint;
 
 	public override void _Ready() {
 		Player = (RigidBody3D) this.GetNode("../..");
+		StartPoint = GlobalTransform.Origin;
 	}
 
 	private void StartGrapple() {
@@ -34,7 +37,7 @@ public partial class GrappleHook : Node3D
 		}
 	}
 
-	private void UpdateGrapple() {
+	private void UpdateGrapple(double delta) {
 		Vector3 GrapplePath = GrappleTarget - Player.Transform.Origin;
 		Vector3 GrapplePathNormal = GrapplePath.Normalized();
 		float GrappleDist = GrapplePath.Length();
@@ -44,10 +47,13 @@ public partial class GrappleHook : Node3D
 		if (SpringDist > 0) {
 			SpringForce = GrapplePathNormal * SpringDist * Stiffness;
 
-			Vector3 VelDot = Player.LinearVelocity.Dot(GrapplePathNormal);
+			float VelDot = Player.LinearVelocity.Dot(GrapplePathNormal);
+			Vector3 LocalDamping = -Damping * VelDot * GrapplePathNormal;
 
+			SpringForce = SpringForce + LocalDamping;
 		}
 
+		SpringForce = (float)delta * SpringForce;
 		Player.LinearVelocity = Player.LinearVelocity + SpringForce;
 		GD.Print(SpringDist);
 	}
@@ -67,7 +73,16 @@ public partial class GrappleHook : Node3D
 	public override void _PhysicsProcess(double delta)
 	{
 		if (Grappling) {
-			UpdateGrapple();
+			UpdateGrapple(delta);
+		}
+	}
+
+	public override void _Process(double delta)
+	{
+		if (Input.IsActionPressed("reset")) {
+			Transform3D newTransform = GlobalTransform;
+			newTransform.Origin = StartPoint;
+			GlobalTransform = newTransform;
 		}
 	}
 }

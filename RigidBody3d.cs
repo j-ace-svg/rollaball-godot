@@ -11,12 +11,15 @@ public partial class RigidBody3d : RigidBody3D
 	public const float Sensitivity = 0.001f;
 	public float framesGrounded = 0f;
 
+	private Vector3 StartPoint;
+
 	private float direction = Mathf.Pi;
 	private float oldDirection = 0;
 	private bool isGrounded = false;
 
 	public override void _Ready() {
 		Input.MouseMode = Input.MouseModeEnum.Captured;
+		StartPoint = GlobalTransform.Origin;
 	}
 
 	public override void _Input(InputEvent @event) {
@@ -110,5 +113,16 @@ public partial class RigidBody3d : RigidBody3D
 		}
 
 		LinearVelocity = new Vector3(flatVelocity.X, LinearVelocity.Y + acceleration.Y * (float)delta, flatVelocity.Y);
+	}
+
+	public override void _Process(double delta)
+	{
+		if (Input.IsActionPressed("reset")) {
+			Transform3D newTransform = GlobalTransform;
+			newTransform.Origin = StartPoint;
+			GlobalTransform = newTransform;
+			LinearVelocity = Vector3.Zero;
+			direction = Mathf.Pi;
+		}
 	}
 }

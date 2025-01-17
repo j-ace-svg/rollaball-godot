@@ -1,9 +1,10 @@
-[gd_scene load_steps=8 format=3 uid="uid://ctip0rfo5n3o5"]
+[gd_scene load_steps=9 format=3 uid="uid://ctip0rfo5n3o5"]
 
 [ext_resource type="PhysicsMaterial" uid="uid://dst4i2wsaoi56" path="res://physics materials/floor_material.tres" id="1_83emy"]
 [ext_resource type="Texture2D" uid="uid://c3hp1bd87pvw6" path="res://textures/Seamless-Stone-Wall-Texture-3210711477.jpg" id="2_ekdap"]
 [ext_resource type="PackedScene" uid="uid://bevbirsoj1225" path="res://player.tscn" id="3_fhtdm"]
 [ext_resource type="PackedScene" uid="uid://dnxjcy6dm3th" path="res://wall.tscn" id="5_5p7yw"]
+[ext_resource type="PackedScene" uid="uid://bjpbfxxd0ucdv" path="res://block.tscn" id="5_w2wbi"]
 
 [sub_resource type="StandardMaterial3D" id="StandardMaterial3D_c5nyc"]
 albedo_texture = ExtResource("2_ekdap")
@@ -146,3 +147,8 @@ transform = Transform3D(0.719834, 1.24679, 0.431901, -1.76323, 1.018, -2.91774e-
 
 [node name="Wall" parent="Ramps/Flat ramp" instance=ExtResource("5_5p7yw")]
 transform = Transform3D(0.681558, -0.96195, 1.73553, 1.54103, 0.725, 0, -0.571895, 0.807172, 2.06832, 36.3932, -52.9315, 136.132)
+
+[node name="GrappleTargets" type="Node" parent="."]
+
+[node name="Block" parent="GrappleTargets" instance=ExtResource("5_w2wbi")]
+transform = Transform3D(3.53, 0, 0, 0, 3.53, 0, 0, 0, 3.53, 36.8514, 14, 143.617)
