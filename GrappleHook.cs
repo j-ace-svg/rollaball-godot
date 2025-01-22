@@ -13,27 +13,14 @@ public partial class GrappleHook : Node3D
 	public float RestLength = 10f;
 	public const float Stiffness = 5f;
 	public const float Damping = 1f;
-	private MeshInstance3D GrappleLine;
+
+	private MeshInstance3D TargetPointMesh;
 
 	public override void _Ready() {
 		Player = (RigidBody3D) this.GetNode("../..");
-		
-		GrappleLine = new MeshInstance3D();
-		ImmediateMesh GrappleMesh = new ImmediateMesh();
-		OrmMaterial3D GrappleMaterial = new OrmMaterial3D();
 
-		GrappleLine.Mesh = GrappleMesh;
-		GrappleLine.CastShadow = GeometryInstance3D.ShadowCastingSetting.Off;
-
-		GrappleMesh.SurfaceBegin(Mesh.PrimativeType.Lines, GrappleMaterial);
-		GrappleMesh.SurfaceAddVertex(Vector3.Zero);
-		GrappleMesh.SurfaceAddVertex(Vector3.Up);
-		GrappleMesh.SurfaceEnd();
-
-		GrappleMaterial.ShadingMode = BaseMaterial3D.ShadingMode.Unshaded;
-		GrappleMaterial.AlbedoColor = new Color(255f, 255f, 255f);
-
-		this.GetTree().GetRoot().AddChild(GrappleLine);
+		TargetPointMesh = new MeshInstance3D();
+		TargetPointMesh.Mesh = new SphereMesh();
 	}
 
 	private void StartGrapple() {
