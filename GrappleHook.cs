@@ -14,13 +14,11 @@ public partial class GrappleHook : Node3D
 	public const float Stiffness = 5f;
 	public const float Damping = 1f;
 
-	private MeshInstance3D TargetPointMesh;
+	private Node3D TargetPoint;
+	private PackedScene TargetPointTemplate = GD.Load<PackedScene>("res://grapple_target.tscn");
 
 	public override void _Ready() {
 		Player = (RigidBody3D) this.GetNode("../..");
-
-		TargetPointMesh = new MeshInstance3D();
-		TargetPointMesh.Mesh = new SphereMesh();
 	}
 
 	private void StartGrapple() {
@@ -36,6 +34,12 @@ public partial class GrappleHook : Node3D
 			GD.Print(result);
 			GrappleTarget = ((Vector3) result["position"]);
 			RestLength = (GrappleTarget - Player.Transform.Origin).Length() * 0.85f;
+
+			TargetPoint = (Node3D) TargetPointTemplate.Instantiate();
+			GetTree().GetRoot().AddChild(TargetPoint);
+			Transform3D TargetTransform = TargetPoint.Transform;
+			TargetTransform.Origin = GrappleTarget;
+			TargetPoint.Transform = TargetTransform;
 		}
 	}
 
@@ -60,10 +64,6 @@ public partial class GrappleHook : Node3D
 		GD.Print(SpringDist);
 	}
 
-	private void DrawGrappleLine(Vector3 start, Vector3 end) {
-
-	}
-
 	public override void _Input(InputEvent @event) {
 		if (@event is InputEventMouseButton clickEvent) {
 			if (clickEvent.ButtonIndex == MouseButton.Left) {
@@ -71,6 +71,7 @@ public partial class GrappleHook : Node3D
 					StartGrapple();
 				} else {
 					Grappling = false;
+					TargetPoint.QueueFree();
 				}
 			}
 		}

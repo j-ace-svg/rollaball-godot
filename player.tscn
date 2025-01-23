@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=3 uid="uid://bevbirsoj1225"]
+[gd_scene load_steps=9 format=3 uid="uid://bevbirsoj1225"]
 
 [ext_resource type="Script" path="res://RigidBody3d.cs" id="1_w3dtc"]
 [ext_resource type="PhysicsMaterial" uid="uid://bcyuokwaemhg7" path="res://physics materials/player_material.tres" id="1_wxu4m"]
 [ext_resource type="Script" path="res://GrappleHook.cs" id="3_8qhdc"]
+[ext_resource type="Texture2D" uid="uid://ccjh4dtf5wryg" path="res://textures/crosshair.png" id="4_02817"]
 [ext_resource type="Script" path="res://CameraController.cs" id="4_pp3bi"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_68i1l"]
@@ -26,6 +27,14 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.856, -0.076)
 script = ExtResource("4_pp3bi")
 
 [node name="Camera3D" type="Camera3D" parent="CameraContainer"]
+
+[node name="TextureRect" type="TextureRect" parent="CameraContainer/Camera3D"]
+texture_filter = 1
+offset_left = 566.0
+offset_top = 314.0
+offset_right = 586.0
+offset_bottom = 334.0
+texture = ExtResource("4_02817")
 
 [node name="GrappleHookController" type="Node3D" parent="CameraContainer"]
 script = ExtResource("3_8qhdc")
