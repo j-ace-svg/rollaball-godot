@@ -11,7 +11,8 @@ public partial class GrappleHook : Node3D
 	public RigidBody3D Player;
 
 	public float RestLength = 10f;
-	public const float Stiffness = 5f;
+	public const float RestRatio = 0.5f;
+	public const float Stiffness = 10f;
 	public const float Damping = 1f;
 
 	private Node3D TargetPoint;
@@ -25,7 +26,7 @@ public partial class GrappleHook : Node3D
 		Vector3 position = GlobalTransform.Origin;
 		Vector3 direction = -1 * GlobalTransform.Basis.Z;
 		var spaceState = GetWorld3D().DirectSpaceState;
-		var query = PhysicsRayQueryParameters3D.Create(position, position + direction * GrappleDistance);
+		var query = PhysicsRayQueryParameters3D.Create(position, position + direction * GrappleDistance, 1);
 		var result = spaceState.IntersectRay(query);
 
 		if (result.Count != 0)
@@ -33,7 +34,7 @@ public partial class GrappleHook : Node3D
 			Grappling = true;
 			GD.Print(result);
 			GrappleTarget = ((Vector3) result["position"]);
-			RestLength = (GrappleTarget - Player.Transform.Origin).Length() * 0.85f;
+			RestLength = (GrappleTarget - Player.Transform.Origin).Length() * RestRatio;
 
 			TargetPoint = (Node3D) TargetPointTemplate.Instantiate();
 			GetTree().GetRoot().AddChild(TargetPoint);
@@ -69,7 +70,7 @@ public partial class GrappleHook : Node3D
 			if (clickEvent.ButtonIndex == MouseButton.Left) {
 				if (clickEvent.Pressed) {
 					StartGrapple();
-				} else {
+				} else if (Grappling) {
 					Grappling = false;
 					TargetPoint.QueueFree();
 				}
