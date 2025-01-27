@@ -1,0 +1,31 @@
+[gd_scene load_steps=8 format=3 uid="uid://bjpbfxxd0ucdv"]
+
+[ext_resource type="PhysicsMaterial" uid="uid://dst4i2wsaoi56" path="res://physics materials/floor_material.tres" id="1_8ycue"]
+[ext_resource type="Texture2D" uid="uid://dx6p1ng6f1wub" path="res://textures/steel-box-texture.jpg" id="2_amvgm"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yatoq"]
+albedo_texture = ExtResource("2_amvgm")
+
+[sub_resource type="CompressedTexture2D" id="CompressedTexture2D_7mkke"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_pcnra"]
+albedo_texture = SubResource("CompressedTexture2D_7mkke")
+
+[sub_resource type="BoxMesh" id="BoxMesh_ci144"]
+material = SubResource("StandardMaterial3D_pcnra")
+
+[sub_resource type="ConcavePolygonShape3D" id="ConcavePolygonShape3D_11ahm"]
+data = PackedVector3Array(-0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, -0.5)
+
+[node name="Block" type="Node3D"]
+
+[node name="StaticBody3D9" type="StaticBody3D" parent="."]
+collision_layer = 3
+physics_material_override = ExtResource("1_8ycue")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="StaticBody3D9"]
+material_override = SubResource("StandardMaterial3D_yatoq")
+mesh = SubResource("BoxMesh_ci144")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="StaticBody3D9"]
+shape = SubResource("ConcavePolygonShape3D_11ahm")

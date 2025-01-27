@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://dmie635b86s6d"]
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_yes7l"]
+albedo_color = Color(1, 0, 0, 1)
+
+[sub_resource type="SphereMesh" id="SphereMesh_ree6x"]
+material = SubResource("StandardMaterial3D_yes7l")
+
+[node name="GrappleTarget" type="MeshInstance3D"]
+mesh = SubResource("SphereMesh_ree6x")
