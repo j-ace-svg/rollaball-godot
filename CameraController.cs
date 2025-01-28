@@ -22,7 +22,8 @@ public partial class CameraController : Node3D
 			verticalDirection += deltaRotation;
 
 			Transform3D transform = Transform;
-			transform.Basis = transform.Basis.Rotated(Vector3.Right, deltaRotation);
+			//transform.Basis = transform.Basis.Rotated(Vector3.Right, deltaRotation);
+			transform.Basis = Basis.FromEuler(new Vector3(verticalDirection, 0, 0));
 
 			Transform = transform;
 		}
