@@ -32,6 +32,7 @@ public partial class RigidBody3d : RigidBody3D
 	public override void _IntegrateForces(PhysicsDirectBodyState3D state) {
 		Transform3D newTransform = state.GetTransform();
 		RotateObjectLocal(Vector3.Up, direction - oldDirection);
+		state.AngularVelocity = Vector3.Zero;
 		//newTransform = newTransform.Rotated(Vector3.Up, direction - oldDirection); // Rotate the player
 
 		int contactCount = state.GetContactCount();
